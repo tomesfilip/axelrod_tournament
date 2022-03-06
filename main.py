@@ -33,24 +33,26 @@ def random_strategy(history):
     return random.randint(1, 2)
 
 
-moves_history = []
 strategies = [always_defect, always_cooperate, tit_for_tat, random_strategy]
 
-player_one = AxelrodPlayer(strategy=strategies[2], points=0)
-player_two = AxelrodPlayer(strategy=strategies[3], points=0)
+for index, strategy in enumerate(strategies):
+    for strategy_index, player_two_strategy in enumerate(strategies[index:len(strategies)]):
+        moves_history = []
+        player_one = AxelrodPlayer(strategy=strategy, points=0)
+        player_two = AxelrodPlayer(strategy=player_two_strategy, points=0)
 
-for i in range(200):
-    player_one_choice = player_one.strategy(moves_history)
-    player_two_choice = player_two.strategy([i[::-1] for i in moves_history[::1]])
+        for i in range(200):
+            player_one_choice = player_one.strategy(moves_history)
+            player_two_choice = player_two.strategy([i[::-1] for i in moves_history[::1]])
 
-    moves_history.append([player_one_choice, player_two_choice])
+            moves_history.append([player_one_choice, player_two_choice])
 
-    player_one.points += point_rules.get((player_one_choice, player_two_choice))
-    player_two.points += point_rules.get((player_two_choice, player_one_choice))
+            player_one.points += point_rules.get((player_one_choice, player_two_choice))
+            player_two.points += point_rules.get((player_two_choice, player_one_choice))
+
+        print(f"#{strategy_index + 1} Game - {player_one.strategy} vs {player_two.strategy}")
+        print("Points (player 1): ", player_one.points)
+        print("Points (player 2): ", player_two.points)
 
 
-print("Points (player 1): ", player_one.points)
-print("Points (player 2): ", player_two.points)
-
-print(moves_history)
 
