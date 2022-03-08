@@ -38,6 +38,18 @@ def tit_for_two_tat(history):
     return 2
 
 
+def first_by_davis(history):
+    # TODO: implement logic
+    pass
+
+
+# Coops always - when opponent did a different move in the previous turn then the chance of cooperation is 2/7
+def first_by_grofman(history):
+    if len(history) == 0 or history[-1][0] == history[-1][1]:
+        return 2
+    return random.choices(population=[1, 2], weights=[5/7, 2/7])[0]
+
+
 def print_result(p1: AxelrodPlayer, p2: AxelrodPlayer):
     print(f"{player_one.strategy.__name__} vs {player_two.strategy.__name__}\n")
     if p1.points > p2.points:
@@ -82,4 +94,3 @@ for strategy_name, strategy_points in strategy_statistics.items():
     print(f"STRATEGY {strategy_name} earned: {strategy_points}")
 print(f"\nWinner strategy is '{max(strategy_statistics, key=strategy_statistics.get)}' "
       f"with {max(strategy_statistics.values())} points.\n")
-
