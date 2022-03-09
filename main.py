@@ -38,9 +38,13 @@ def tit_for_two_tat(history):
     return 2
 
 
+# Coops first 10 rounds, defects afterwards if an opponent defected
 def first_by_davis(history):
-    # TODO: implement logic
-    pass
+    if len(history) < 10:
+        return 2
+    if 2 in history[::][1]:
+        return 1
+    return 2
 
 
 # Coops always - when opponent did a different move in the previous turn then the chance of cooperation is 2/7
@@ -50,17 +54,31 @@ def first_by_grofman(history):
     return random.choices(population=[1, 2], weights=[5/7, 2/7])[0]
 
 
+# Own strategy
+def first_by_tomes(history):
+    if len(history) % 2 == 0:
+        return 2
+    return 1
+
+
 def print_result(p1: AxelrodPlayer, p2: AxelrodPlayer):
-    print(f"{player_one.strategy.__name__} vs {player_two.strategy.__name__}\n")
+    print(f"{player_one.strategy.__name__} vs {player_two.strategy.__name__}")
     if p1.points > p2.points:
-        print(f"The winner strategy is {p1.strategy.__name__} with {p1.points} points.")
+        print(f"The winner strategy is {p1.strategy.__name__} with {p1.points} points.\n")
     elif p1.points == p2.points:
-        print(f"It's draw. Both {p1.strategy.__name__} and {p2.strategy.__name__} with {p1.points} points.")
+        print(f"It's draw. Both {p1.strategy.__name__} and {p2.strategy.__name__} with {p1.points} points.\n")
     else:
         print(f"The winner strategy is {p2.strategy.__name__} with {p2.points} points.\n")
 
 
-strategies = [always_defect, always_cooperate, tit_for_tat, random_strategy, tit_for_two_tat]
+strategies = [always_defect,
+              always_cooperate,
+              tit_for_tat,
+              random_strategy,
+              tit_for_two_tat,
+              first_by_davis,
+              first_by_grofman,
+              first_by_tomes]
 stats = []
 
 for index, strategy in enumerate(strategies):
